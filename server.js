@@ -10,7 +10,7 @@ app.listen(3002, function() {
 app.use(express.json())
 
 //add database authentication here.
-//const uri = "mongodb+srv://<username>:<password>@cluster0.02djz.mongodb.net/employees?retryWrites=true&w=majority";
+const uri = "mongodb+srv://ajay:pass495@cluster0.02djz.mongodb.net/employees?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 client.connect(err => {
   
@@ -31,16 +31,19 @@ client.connect(err => {
 
   });
 
-  app.get('/tasks', (req, res) => {
+  // Get all the tasks for a  specific username. 
+  // Note : This also pulls all the tasks that are not assigned to anyone.
+  // Example : "http://localhost:3002/tasks/ajay"
+  app.get('/tasks/:username', (req, res) => {
+    var employee_username = req.params.username
+    console.log(`Gettting tasks for ${employee_username}`);
     const collection = client.db("employees").collection("tasks");
-    console.log("got req");
-    collection.find().toArray().then(results => {
+    collection.find({"assigned":{"$in":[`${employee_username}`,"open"]}}).toArray().then(results => {
       if(results.length > 0){
         res.json(results);
       }
     })
     .catch(error => console.error(error));
-
   });
 
   app.post('/addTask', (req, res) => {
