@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const MongoClient = require('mongodb').MongoClient;
 const config = require('./config');
+const  ObjectId = require('mongodb').ObjectID;
 
 // Start the server
 app.listen(3002, function() {
@@ -45,6 +46,45 @@ client.connect(err => {
     })
     .catch(error => console.error(error));
   });
+
+
+  // This method updates the task by replacing the whole task document in the collection. 
+  // Example : "http://localhost:3002/updateTask"
+  // Request  body example :
+  // {
+  //   "_id": "5fb01e2872d8db3e0d2befb4",
+  //   "title": "Test UpdatedONe",
+  //   "description": "This is a test whether it worked or not hahahahahha",
+  //   "subTasks": [
+  //     {
+  //       "st_desc": "Replace the toilet papers",
+  //       "completed": false
+  //     },
+  //     {
+  //       "st_desc": "Refill handwashing soap",
+  //       "completed": true
+  //     }
+  //   ],
+  //   "role": "Janitor",
+  //   "shift": "8:00-17:00",
+  //   "status": "incomplete",
+  //   "assigned": "open"
+  // }
+  app.post('/updateTask', (req, res) => {
+    console.log(req.body);
+    const updatedTask = req.body
+    const TaskId = req.body['_id']
+    console.log(`Task id : ${TaskId}`)
+    delete updatedTask['_id']
+    console.log (updatedTask)
+    const collection = client.db("employees").collection("tasks");
+    collection.replaceOne({"_id": ObjectId(`${TaskId}`)}, updatedTask)
+    res.json("Updating the task")
+  })
+
+
+
+  
 
   app.post('/addTask', (req, res) => {
     console.log("got req");
