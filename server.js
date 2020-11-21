@@ -31,6 +31,7 @@ client.connect(err => {
       .catch(error => console.error(error));
 
   });
+  
 
   // Get all the tasks for a  specific username. 
   // Note : This also pulls all the tasks that are not assigned to anyone.
@@ -45,6 +46,18 @@ client.connect(err => {
       }
     })
     .catch(error => console.error(error));
+  });
+  
+  app.get('/tasks', (req, res) => {
+    const collection = client.db("employees").collection("tasks");
+    console.log("got req");
+    collection.find().toArray().then(results => {
+      if(results.length > 0){
+        res.json(results);
+      }
+    })
+    .catch(error => console.error(error));
+
   });
 
 
