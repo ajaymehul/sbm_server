@@ -60,6 +60,17 @@ client.connect(err => {
 
   });
 
+  app.get('/users', (req, res) => {
+    console.log(`Gettting employee usernames`);
+    const collection = client.db("employees").collection("user");
+    collection.find({"type":{"$in":["employee"]}}).toArray().then(results => {
+      if(results.length > 0){
+        res.json(results);
+      }
+    })
+    .catch(error => console.error(error));
+  });
+
 
   // This method updates the task by replacing the whole task document in the collection. 
   // Example : "http://localhost:3002/updateTask"
