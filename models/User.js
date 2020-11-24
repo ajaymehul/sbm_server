@@ -1,7 +1,7 @@
 var mongoose = require('mongoose')
   , Schema = mongoose.Schema
 
-var userSchema = Schema({
+var userSchema = new Schema({
   _id: mongoose.Schema.Types.ObjectId,
   username: {
     type: String,

@@ -8,10 +8,6 @@ app.use(express.json());
 app.use('/', postRoutes);
 app.use('/', getRoutes);
 
-// Start the server
-app.listen(config.port, function() {
-  console.log('listening on 3002')
-})
 
 module.exports = app;
 

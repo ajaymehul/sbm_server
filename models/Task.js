@@ -1,7 +1,7 @@
 var mongoose = require('mongoose')
   , Schema = mongoose.Schema
 
-var taskSchema = Schema({
+var taskSchema = new Schema({
   _id: mongoose.Schema.Types.ObjectId,
   title: {
     type: String,
@@ -33,6 +33,8 @@ var taskSchema = Schema({
     type: String,
     required: true
   }
-});
+},
+{ collection: 'tasks' }
+);
 
 module.exports = mongoose.model('Task', taskSchema);

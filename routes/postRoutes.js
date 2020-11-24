@@ -34,7 +34,8 @@ router.post('/addTask', (req, res) => {
         res.json(data);
         }
     )
-    .catch(err => {console.log(err);});
+    .catch(err => {
+        res.json(err);});
 
 
 });

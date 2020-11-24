@@ -1,13 +1,13 @@
 const config = require('./config');
-const mongoose = require('mongoose');
 const app = require('./app');
+const mongoose = require('mongoose');
+const db = require('./db/index');
+
+db.connect().then(() => {
+    app.listen(config.port, () => {
+      console.log('Listening on port: ' + config.port);
+    });
+  });
 
 
-
-//add database authentication here.
-
-mongoose.connect(config.uri, { useNewUrlParser: true, useUnifiedTopology: true }, ()  => {
-  // perform actions on the collection object
-  console.log("connected");
-});
 
