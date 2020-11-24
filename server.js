@@ -47,6 +47,15 @@ client.connect(err => {
     })
     .catch(error => console.error(error));
   });
+
+  app.post('/deleteTask/:taskid', (req, res) => {
+    var taskid = req.params.taskid;
+    console.log(`Deleting task ${taskid}`);
+    const collection = client.db("employees").collection("tasks");
+    collection.deleteOne({_id: new ObjectId(taskid)})
+    .catch(error => console.error(error));
+    res.sendStatus(200);
+  });
   
   app.get('/tasks', (req, res) => {
     const collection = client.db("employees").collection("tasks");
@@ -57,7 +66,6 @@ client.connect(err => {
       }
     })
     .catch(error => console.error(error));
-
   });
 
   app.get('/users', (req, res) => {
@@ -103,7 +111,7 @@ client.connect(err => {
     console.log (updatedTask)
     const collection = client.db("employees").collection("tasks");
     collection.replaceOne({"_id": ObjectId(`${TaskId}`)}, updatedTask)
-    res.json("Updating the task")
+    res.sendStatus(200);
   })
 
 
@@ -117,7 +125,7 @@ client.connect(err => {
     req.body.subTasks = JSON.parse(req.body.subTasks.replace(/'/g, '"'));
     collection.insert(req.body)
     .catch(error => console.error(error));
-
+    res.sendStatus(200);
   });
 
 });
