@@ -114,6 +114,7 @@ client.connect(err => {
     console.log("got req");
     const collection = client.db("employees").collection("tasks");
     console.log("got req");
+    req.body.subTasks = JSON.parse(req.body.subTasks.replace(/'/g, '"'));
     collection.insert(req.body)
     .catch(error => console.error(error));
 
