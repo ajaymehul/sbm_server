@@ -33,7 +33,7 @@ describe('GET /tasks', () => {
       .catch((err) => done(err));
   });
 
-  it('Fail, 1 task to receive', (done) => {
+  it('OK, 1 task to receive', (done) => {
     request(app).post('/addTask')
       .send(payloads[0])
       .then((res) => {
@@ -45,6 +45,33 @@ describe('GET /tasks', () => {
       })
       .catch((err) => done(err));
   });
+
+  it('OK, add task and get task for same user, 1 total', (done) => {
+    request(app).post('/addTask')
+      .send(payloads[1])
+      .then((res) => {
+        request(app).get('/tasks/'+payloads[1].assigned).then((res) => {
+          const body = res.body;
+          expect(body.length).to.equal(1);
+          done();
+        });
+      })
+      .catch((err) => done(err));
+  });
+
+  it('OK, add task and get task for different user, 0 total', (done) => {
+    request(app).post('/addTask')
+      .send(payloads[1])
+      .then((res) => {
+        request(app).get('/tasks/'+payloads[2].assigned).then((res) => {
+          const body = res.body;
+          expect(body.length).to.equal(0);
+          done();
+        });
+      })
+      .catch((err) => done(err));
+  });
+
 
 });
 
@@ -67,6 +94,7 @@ const payloads = [ {
     assigned: 'open'
     },
      {
+        title: 'Mocha test',
     description: 'Clean the restroom properly. Clean the restroom properly. Clean the restroom properly. Clean the restroom properly. Clean the restroom properly.',
     subTasks: [
         {
@@ -81,5 +109,24 @@ const payloads = [ {
     role: 'Janitor',
     shift: '8:00-17:00',
     status: 'incomplete',
-    assigned: 'open'
-    }];
+    assigned: 'mochaboy'
+    },
+    {
+        title: 'Mocha test',
+    description: 'Clean the restroom properly. Clean the restroom properly. Clean the restroom properly. Clean the restroom properly. Clean the restroom properly.',
+    subTasks: [
+        {
+            st_desc: 'Replace the toilet papers',
+            completed: true
+        },
+        {
+            st_desc: 'Refill handwashing soap',
+            completed: true
+        }
+    ],
+    role: 'Janitor',
+    shift: '8:00-17:00',
+    status: 'incomplete',
+    assigned: 'notmochaboy'
+    }
+    ];
