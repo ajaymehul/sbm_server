@@ -54,6 +54,35 @@ describe('POST /addTask', () => {
 
 });
 
+// describe('POST /deleteTask/:taskid', () => {
+ 
+//   it('OK, Delete a specific Task', (done) => {
+    
+//     request(app).post('/addTask')
+//       .send(payloads[0])
+//       .then((res) => {
+//         request(app).post('/deleteTask' + res.body.id)
+        
+//         done();
+//       })
+//       .catch((err) => done(err));
+//   });
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const payloads = [ {
       title: 'Mocha test',
     description: 'Clean the restroom properly. Clean the restroom properly. Clean the restroom properly. Clean the restroom properly. Clean the restroom properly.',

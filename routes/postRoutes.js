@@ -15,6 +15,7 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/deleteTask/:taskid', (req, res) => {
+    console.log("Will delete a task")
     var taskid = req.params.taskid;
     const filter = {_id: taskid};
     Task.findOneAndDelete(filter).then(data => {
