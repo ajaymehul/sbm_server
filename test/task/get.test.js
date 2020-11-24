@@ -20,34 +20,28 @@ afterEach(async () => await dbHandler.clear());
 afterAll(async () => await dbHandler.close());
 
 
-describe('POST /addTask', () => {
+describe('GET /tasks', () => {
  
-  it('OK, adding Task works', (done) => {
+  it('OK, no tasks to receive', (done) => {
     
-    request(app).post('/addTask')
-      .send(payloads[0])
+    request(app).get('/tasks')
       .then((res) => {
         const body = res.body;
-        expect(body).to.contain.property('title');
-        expect(body).to.contain.property('description');
-        expect(body).to.contain.property('subTasks');
-        expect(body).to.contain.property('role');
-        expect(body).to.contain.property('shift');
-        expect(body).to.contain.property('status');
-        expect(body).to.contain.property('assigned');
+        expect(body.length).to.equal(0);
         done();
       })
       .catch((err) => done(err));
   });
 
-  it('Fail, new task requires title', (done) => {
+  it('Fail, 1 task to receive', (done) => {
     request(app).post('/addTask')
-      .send(payloads[1])
+      .send(payloads[0])
       .then((res) => {
-        const body = res.body;
-        expect(body.errors.title.name)
-          .to.equal('ValidatorError');
-        done();
+        request(app).get('/tasks').then((res) => {
+          const body = res.body;
+          expect(body.length).to.equal(1);
+          done();
+        });
       })
       .catch((err) => done(err));
   });

@@ -6,7 +6,6 @@ const router = express.Router();
 
 
 router.post('/login', (req, res) => {
-    console.log(req.body);
     const filter = {username: req.body.username};
     User.findOne(filter).then(data => {
         if(data.password === req.body.password) res.json(data);
@@ -26,7 +25,6 @@ router.post('/deleteTask/:taskid', (req, res) => {
 });
 
 router.post('/addTask', (req, res) => {
-    console.log(req.body);
     req.body._id = new mongoose.Types.ObjectId();
     const task = new Task(req.body);
     
