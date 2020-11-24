@@ -38,6 +38,20 @@ router.post('/addTask', (req, res) => {
 
 });
 
+router.post('/addUser', (req, res) => {
+    req.body._id = new mongoose.Types.ObjectId();
+    const user = new User(req.body);
+    
+    user.save().then(data => {
+        res.json(data);
+        }
+    )
+    .catch(err => {
+        res.json(err);});
+
+
+});
+
 router.post('/updateTask', async (req, res) => {
     console.log(req.body._id);
     const filter = {_id: req.body._id};
