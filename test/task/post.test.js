@@ -54,28 +54,32 @@ describe('POST /addTask', () => {
 
 });
 
-// describe('POST /deleteTask/:taskid', () => {
- 
-//   it('OK, Delete a specific Task', (done) => {
-    
-//     request(app).post('/addTask')
-//       .send(payloads[0])
-//       .then((res) => {
-//         request(app).post('/deleteTask' + res.body.id)
-        
-//         done();
-//       })
-//       .catch((err) => done(err));
-//   });
-// });
+// Testing the delete Task functionality
+describe('POST /deleteTask/:taskid', () => {
 
+  it('OK, deleting a specific Task works', (done) => {
+    request(app).post('/addTask')
+      .send(payloads[0])
+      .then((res) => {
+        const taskid = res.body["_id"];
+        request(app).post('/deleteTask/' + taskid)
+          .then((res) => {
+            request(app).get('/tasks')
+              .then((res) => {
+                const body = res.body;
+                expect(body.length).to.equal(0);
+                done();
+              })
+              .catch((err) => done(err));
+          })
 
+        done();
+      })
+      .catch((err) => done(err));
+    console.log("exiting")
+  });
 
-
-
-
-
-
+});
 
 
 

@@ -14,8 +14,8 @@ router.post('/login', (req, res) => {
     .catch(err => {console.log(err);});
 });
 
+// Example : http://localhost:3003/deleteTask/5fc561a711c03ca422f4b4e2
 router.post('/deleteTask/:taskid', (req, res) => {
-    console.log("Will delete a task")
     var taskid = req.params.taskid;
     const filter = {_id: taskid};
     Task.findOneAndDelete(filter).then(data => {
@@ -30,6 +30,7 @@ router.post('/addTask', (req, res) => {
     const task = new Task(req.body);
     
     task.save().then(data => {
+        console.log(data);
         res.json(data);
         }
     )
