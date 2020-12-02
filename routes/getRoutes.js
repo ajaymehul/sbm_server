@@ -1,6 +1,7 @@
 const express = require('express');
 const Task = require('../models/Task');
 const User = require('../models/User');
+const Shift = require('../models/Shift');
 const router = express.Router();
 
 router.get('/tasks/:username', (req, res) => {
@@ -22,6 +23,13 @@ router.get('/tasks', (req, res) => {
 router.get('/users', (req, res) => {
     const filter = {type: "employee"};
     User.find(filter).then(data => {
+       res.json(data);
+    })
+    .catch(err => {console.log(err);});
+});
+
+router.get('/shifts', (req, res) => {
+    Shift.find().then(data => {
        res.json(data);
     })
     .catch(err => {console.log(err);});
