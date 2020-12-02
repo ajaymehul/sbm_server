@@ -1,6 +1,7 @@
 const express = require('express');
 const Task = require('../models/Task');
 const User = require('../models/User');
+const Shift = require('../models/Shift');
 const mongoose = require('mongoose');
 const router = express.Router();
 
@@ -38,6 +39,19 @@ router.post('/addTask', (req, res) => {
         res.json(err);});
 
 
+});
+
+router.post('/addShift', (req, res) => {
+    req.body._id = new mongoose.Types.ObjectId();
+    const shift = new Shift(req.body);
+    
+    shift.save().then(data => {
+        console.log(data);
+        res.json(data);
+        }
+    )
+    .catch(err => {
+        res.json(err);});
 });
 
 router.post('/addUser', (req, res) => {

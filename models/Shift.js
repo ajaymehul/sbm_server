@@ -4,11 +4,11 @@ var mongoose = require('mongoose')
 var shiftSchema = new Schema({
   _id: mongoose.Schema.Types.ObjectId,
   startTime: {
-    type: Date,
+    type: String,
     required: true
   },
   endTime: {
-    type: Date,
+    type: String,
     required: true
   },
   assignedTo: {
