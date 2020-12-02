@@ -14,11 +14,6 @@ var shiftSchema = new Schema({
   assignedTo: {
     type: String,
     required: true
-  },
-
-  color: {
-    type: String,
-    required: true
   }
 
 },
