@@ -2,6 +2,8 @@ const express = require('express');
 const Task = require('../models/Task');
 const User = require('../models/User');
 const Shift = require('../models/Shift');
+const Trade = require('../models/TradeReq');
+const mongoose = require('mongoose');
 const router = express.Router();
 
 router.get('/tasks/:username', (req, res) => {
@@ -52,5 +54,39 @@ router.get('/shiftsOther/:username', (req, res) => {
     })
     .catch(err => {console.log(err);});
 });
+
+router.get('/trades/:username', (req, res) => {
+    var employee_username = req.params.username
+    const filter = {$or: [{assignedTo: {$in: [employee_username]}},{assignedTo2: {$in: [employee_username]}}]};
+    Trade.find(filter).then(data => {
+       res.json(data);
+    })
+    .catch(err => {console.log(err);});
+});
+
+router.get('/execTrade/:tradeid', (req, res) => {
+    var tradeid = mongoose.Types.ObjectId(req.params.tradeid);
+    console.log(tradeid);
+    const filter = {_id: {$in: [tradeid]}};
+    Trade.findOne(filter).then(datasuper => {
+       Shift.updateOne({_id: {$in: [mongoose.Types.ObjectId(datasuper.oid)]}},
+       {$set: {
+            assignedTo: datasuper.assignedTo
+            }}).then(data => console.log(data));
+        Shift.updateOne({_id: {$in: [mongoose.Types.ObjectId(datasuper.uid)]}},
+       {$set: {
+            assignedTo: datasuper.assignedTo2
+            }}).then(data => console.log(data));
+        res.json(datasuper);
+        
+        Trade.findOneAndDelete({_id: {$in: [tradeid]}}).then(data => {
+            res.json(data);
+            }).catch(err => {console.log(err);});
+                    
+        
+    })
+    .catch(err => {console.log(err);});
+});
+
 
 module.exports = router;

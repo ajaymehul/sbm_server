@@ -3,6 +3,7 @@ const Task = require('../models/Task');
 const User = require('../models/User');
 const Shift = require('../models/Shift');
 const mongoose = require('mongoose');
+const Trade = require('../models/TradeReq');
 const router = express.Router();
 
 
@@ -31,6 +32,20 @@ router.post('/addTask', (req, res) => {
     const task = new Task(req.body);
     
     task.save().then(data => {
+        console.log(data);
+        res.json(data);
+        }
+    )
+    .catch(err => {
+        res.json(err);});
+
+
+});
+router.post('/addTrade', (req, res) => {
+    req.body._id = new mongoose.Types.ObjectId();
+    const trade = new Trade(req.body);
+    
+    trade.save().then(data => {
         console.log(data);
         res.json(data);
         }
