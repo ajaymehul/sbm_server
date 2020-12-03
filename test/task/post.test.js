@@ -72,11 +72,7 @@ describe('POST /deleteTask/:taskid', () => {
               })
               .catch((err) => done(err));
           })
-
-        done();
       })
-      .catch((err) => done(err));
-    console.log("exiting")
   });
 
 });
