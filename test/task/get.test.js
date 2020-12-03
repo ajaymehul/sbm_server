@@ -75,6 +75,101 @@ describe('GET /tasks', () => {
 
 });
 
+describe('GET /shifts', () => {
+
+  it('OK, no shifts will be received', (done) => {
+
+    request(app).get('/shifts')
+      .then((res) => {
+        const body = res.body;
+        expect(body.length).to.equal(0);
+        done();
+      })
+      .catch((err) => done(err));
+  });
+
+  it('OK, 1 shift to receive', (done) => {
+    request(app).post('/addShift')
+      .send(shiftTestData[0]) //change
+      .then((res) => {
+        request(app).get('/shifts').then((res) => {
+          const body = res.body;
+          expect(body.length).to.equal(1);
+          done();
+        });
+      })
+      .catch((err) => done(err));
+  });
+
+  it('OK, get shifts for a specific employee, 1 total', (done) => {
+    request(app).post('/addShift')
+      .send(shiftTestData[0])
+      .then((res) => {
+        request(app).get('/shifts/' + shiftTestData[0].assignedTo).then((res) => {
+          const body = res.body;
+          expect(body.length).to.equal(1);
+          done();
+        });
+      })
+      .catch((err) => done(err));
+  });
+
+  // it('OK, get shifts for all other employees, 2 total', (done) => {
+  //   request(app).post('/addShift')
+  //     .send(shiftTestData[0])
+  //     .then((res) => {
+  //       request(app).post('/addShift')
+  //         .send(shiftTestData[1])
+  //         .then((res) => {
+  //           request(app).post('/addShift')
+  //             .send(shiftTestData[2])
+  //             .then((res) => {
+  //               request(app).get('/shiftsOther/' + shiftTestData[0].assignedTo).then((res) => {
+  //                 const body = req.body;
+  //                 expect(body.length).to.equal(2);
+  //                 expect(body[0].assignedTo).to.equal(shiftTestData[1].assignedTo);
+  //                 expect(body[1].assignedTo).to.equal(shiftTestData[2].assignedTo);
+  //                 done();
+
+
+  //               });
+  //             });
+  //         });
+  //     });
+  // });
+
+});
+
+
+
+const shiftTestData = [
+  {
+    startTime: "1606981020000",
+    endTime: "1606996800000",
+    assignedTo: "casemac"
+  },
+  {
+    startTime: "1606981380000",
+    endTime: "1606996800000",
+    assignedTo: "thomas"
+  },
+
+  {
+    startTime: "1606981380000",
+    endTime: "1606996800000",
+    assignedTo: "haley"
+  },
+]
+
+
+
+
+
+
+
+
+
+
 const payloads = [ {
       title: 'Mocha test',
     description: 'Clean the restroom properly. Clean the restroom properly. Clean the restroom properly. Clean the restroom properly. Clean the restroom properly.',
@@ -130,3 +225,5 @@ const payloads = [ {
     assigned: 'notmochaboy'
     }
     ];
+
+
