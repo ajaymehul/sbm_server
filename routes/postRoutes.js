@@ -32,7 +32,6 @@ router.post('/addTask', (req, res) => {
     const task = new Task(req.body);
     
     task.save().then(data => {
-        console.log(data);
         res.json(data);
         }
     )
@@ -46,7 +45,6 @@ router.post('/addTrade', (req, res) => {
     const trade = new Trade(req.body);
     
     trade.save().then(data => {
-        console.log(data);
         res.json(data);
         }
     )
@@ -61,7 +59,6 @@ router.post('/addShift', (req, res) => {
     const shift = new Shift(req.body);
     
     shift.save().then(data => {
-        console.log(data);
         res.json(data);
         }
     )
@@ -84,7 +81,6 @@ router.post('/addUser', (req, res) => {
 });
 
 router.post('/updateTask', async (req, res) => {
-    console.log(req.body._id);
     const filter = {_id: req.body._id};
     const update = {subTasks: req.body.subTasks};
     Task.findOneAndUpdate(filter, update, {

@@ -66,18 +66,16 @@ router.get('/trades/:username', (req, res) => {
 
 router.get('/execTrade/:tradeid', (req, res) => {
     var tradeid = mongoose.Types.ObjectId(req.params.tradeid);
-    console.log(tradeid);
     const filter = {_id: {$in: [tradeid]}};
     Trade.findOne(filter).then(datasuper => {
        Shift.updateOne({_id: {$in: [mongoose.Types.ObjectId(datasuper.oid)]}},
        {$set: {
             assignedTo: datasuper.assignedTo
-            }}).then(data => console.log(data));
+            }}).then(data => {});
         Shift.updateOne({_id: {$in: [mongoose.Types.ObjectId(datasuper.uid)]}},
        {$set: {
             assignedTo: datasuper.assignedTo2
-            }}).then(data => console.log(data));
-        res.json(datasuper);
+            }}).then(data => {});
         
         Trade.findOneAndDelete({_id: {$in: [tradeid]}}).then(data => {
             res.json(data);
